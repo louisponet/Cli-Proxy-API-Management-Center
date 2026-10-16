@@ -31,6 +31,8 @@ export type QuotaCardProps = {
   entry: QuotaFileEntry;
   quota?: QuotaCardState;
   resolvedTheme: ResolvedTheme;
+  /** Overrides the derived name, e.g. with emails masked. */
+  displayName?: string;
   canRefresh: boolean;
   resetting: boolean;
   /** Initial cascade delay; null disables entrance motion for later mounts. */
@@ -44,6 +46,7 @@ export function QuotaCard(props: QuotaCardProps) {
     entry,
     quota,
     resolvedTheme,
+    displayName: displayNameOverride,
     canRefresh,
     resetting,
     entranceDelayMs,
@@ -55,7 +58,7 @@ export function QuotaCard(props: QuotaCardProps) {
   const file = entry.file;
   const retainedClaudeUsage =
     entry.type === 'claude' && hasClaudeUsageData(quota as ClaudeQuotaState | undefined);
-  const displayName = getQuotaDisplayName(file);
+  const displayName = displayNameOverride ?? getQuotaDisplayName(file);
 
   // Capture the entrance delay only at mount, without a render-time ref read.
   const [mountEntranceDelayMs] = useState<number | null>(entranceDelayMs ?? null);

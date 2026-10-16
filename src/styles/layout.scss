@@ -76,7 +76,17 @@
     rgb(0 0 0 / 0.22) 72%,
     transparent 100%
   );
-  transition: left $transition-normal;
+  /* At rest nothing sits under the floating header, so the glass stays off
+   * and the page heading reads at full contrast; it fades in once content
+   * scrolls beneath (MainLayout toggles .content-scrolled). */
+  opacity: 0;
+  transition:
+    left $transition-normal,
+    opacity var(--dur-hover) var(--ease-out-strong);
+}
+
+.content-scrolled .top-gradient-blur {
+  opacity: 1;
 }
 
 .main-header {
@@ -397,7 +407,7 @@
   z-index: $z-dropdown - 1;
   width: var(--sidebar-panel-width);
   height: 100vh;
-  padding: 14px 10px;
+  padding: 14px 10px 14px 4px;
   display: flex;
   flex-direction: column;
   gap: $spacing-sm;
@@ -494,13 +504,13 @@
     gap: 10px;
     min-width: 0;
     flex: 1;
-    padding: 0 6px;
+    padding: 0 4px;
     color: var(--text-primary);
   }
 
   .sidebar-brand-logo {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     object-fit: contain;
     border-radius: 7px;
     box-shadow: none;
@@ -518,7 +528,7 @@
     min-width: 0;
     overflow: hidden;
     color: var(--text-primary);
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 800;
     letter-spacing: 0;
     white-space: nowrap;
@@ -527,7 +537,7 @@
   .sidebar-brand-subtitle {
     margin-top: 1px;
     overflow: hidden;
-    font-size: 10.5px;
+    font-size: 11px;
     font-weight: 500;
     color: var(--text-secondary);
     text-overflow: ellipsis;
@@ -537,7 +547,7 @@
   .nav-section {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 14px;
     flex: 1;
   }
 
@@ -548,7 +558,7 @@
   }
 
   .nav-group-label {
-    padding: 0 10px 2px;
+    padding: 0 14px 2px;
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.08em;

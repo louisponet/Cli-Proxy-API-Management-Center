@@ -31,27 +31,53 @@
   min-width: 0;
 
   > :first-child {
-    flex: 1 1 auto;
+    flex: 0 1 auto;
     min-width: 0;
   }
 }
 
-.toolbar {
+.controls {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px 16px;
-  min-width: 0;
+  gap: 8px;
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+.searchToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition:
+    color var(--dur-hover) var(--ease-out-strong),
+    background-color var(--dur-hover) var(--ease-out-strong);
+
+  &:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
 }
 
 .search {
   position: relative;
   display: flex;
   align-items: center;
-  flex: 0 1 340px;
+  flex: 0 1 240px;
+  width: 240px;
   min-width: 0;
-  height: 36px;
+  height: 34px;
   border: 1px solid transparent;
   border-radius: 10px;
   background: var(--bg-secondary);
@@ -121,16 +147,16 @@
 
 .sort {
   flex: 0 0 auto;
-  min-width: 148px;
+  min-width: 124px;
   max-width: 100%;
 
   button[aria-haspopup='listbox'] {
-    height: 36px;
-    border-color: transparent;
+    height: 34px;
+    border-color: color-mix(in srgb, var(--border-color) 55%, transparent);
     border-radius: 10px;
-    background: transparent;
+    background: var(--bg-quinary);
     box-shadow: none;
-    color: var(--text-secondary);
+    color: var(--text-primary);
 
     &:focus-visible,
     &[aria-expanded='true'] {
@@ -143,6 +169,7 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .searchToggle:hover,
   .clearSearch:hover,
   .sort button[aria-haspopup='listbox']:hover {
     background: var(--bg-tertiary);
@@ -151,14 +178,19 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .searchToggle:active,
   .clearSearch:active {
     transform: none;
   }
 }
 
 @include mobile {
+  .tabsRow {
+    flex-wrap: wrap;
+  }
+
   .search {
-    flex: 1 1 220px;
+    flex: 1 1 200px;
     height: 40px;
   }
 
@@ -192,6 +224,12 @@
   gap: 16px;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
   align-items: stretch;
+}
+
+.skeletonStack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 /* ---------- 分页 ---------- */

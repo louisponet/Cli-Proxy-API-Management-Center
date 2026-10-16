@@ -23,8 +23,11 @@ describe('provider filter overflow', () => {
     expect(source).toContain("strip.removeEventListener('wheel', onWheel)");
   });
 
-  test('allocates remaining quota toolbar width without shrinking the sort control', () => {
-    expect(quotaStyles).toMatch(/> :first-child\s*\{\s*flex: 1 1 auto;\s*min-width: 0;/);
+  test('lets the strip shrink to scroll while the view controls keep their width', () => {
+    // The strip hugs its tabs (its underline ends at the last one) and only
+    // shrinks into horizontal scrolling when the controls need the room.
+    expect(quotaStyles).toMatch(/> :first-child\s*\{\s*flex: 0 1 auto;\s*min-width: 0;/);
+    expect(quotaStyles).toMatch(/\.controls\s*\{[^}]*flex: 0 0 auto;[^}]*margin-left: auto;/);
     expect(quotaStyles).toMatch(/\.sort\s*\{\s*flex: 0 0 auto;/);
   });
 });

@@ -547,7 +547,6 @@
     "reset_confirm_button": "确认重置",
     "reset_not_confirmed": "未确认额度重置成功，请刷新额度后再决定是否重试。",
     "reset_cooldown_failed": "额度已重置，但代理冷却清除失败。请在原连接的认证文件页面使用“清除冷却”，不要再次消耗重置卡。",
-
     "reset_success": "已重置 \"{{name}}\" 的 Codex 额度",
     "reset_failed": "重置 \"{{name}}\" 的 Codex 额度失败：{{message}}",
     "plan_plus": "Plus",
@@ -1621,7 +1620,23 @@
     "weekday_wed": "三",
     "weekday_thu": "四",
     "weekday_fri": "五",
-    "weekday_sat": "六"
+    "weekday_sat": "六",
+    "show_emails": "显示邮箱",
+    "hide_emails": "隐藏邮箱",
+    "view_label": "视图",
+    "view_ledger": "账本",
+    "view_cards": "卡片",
+    "summary_label": "按提供商汇总额度",
+    "summary_credentials": "{{count}} 个凭证",
+    "summary_of": "共 {{capacity}}",
+    "summary_not_loaded": "尚未加载",
+    "summary_show": "展开",
+    "summary_hide": "收起",
+    "summary_more": "+{{count}}",
+    "summary_meter_label": "{{label}}：剩余 {{total}} / {{capacity}}",
+    "no_reset_pending": "暂无待重置",
+    "ledger_idle": "尚未加载 — 刷新以读取额度",
+    "ledger_no_windows": "未返回额度窗口"
   },
   "plugin_management": {
     "title": "插件管理",

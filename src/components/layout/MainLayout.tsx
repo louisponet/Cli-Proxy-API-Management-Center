@@ -326,6 +326,7 @@ export function MainLayout() {
   const setLanguage = useLanguageStore((state) => state.setLanguage);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [contentScrolled, setContentScrolled] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [authFilesCount, setAuthFilesCount] = useState<number | null>(null);
   const [railTooltip, setRailTooltip] = useState<{
@@ -441,6 +442,22 @@ export function MainLayout() {
       }
       window.removeEventListener('resize', updateContentCenter);
       document.documentElement.style.removeProperty('--content-center-x');
+    };
+  }, []);
+
+  // Show the header's glass fade only while content is scrolled beneath it.
+  useEffect(() => {
+    const el = contentRef.current;
+    const update = () => {
+      const scrolled = (el?.scrollTop ?? 0) > 0 || window.scrollY > 0;
+      setContentScrolled((current) => (current === scrolled ? current : scrolled));
+    };
+    update();
+    el?.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('scroll', update, { passive: true });
+    return () => {
+      el?.removeEventListener('scroll', update);
+      window.removeEventListener('scroll', update);
     };
   }, []);
 
@@ -974,7 +991,7 @@ export function MainLayout() {
     <div
       className={`app-shell ${sidebarCollapsed ? 'sidebar-is-collapsed' : ''} ${
         isPluginResourcePage ? 'plugin-resource-shell' : ''
-      }`}
+      } ${contentScrolled ? 'content-scrolled' : ''}`}
     >
       <div className="top-gradient-blur" aria-hidden="true" />
 

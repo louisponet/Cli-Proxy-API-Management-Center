@@ -1,0 +1,540 @@
+@use '../../../styles/mixins' as *;
+
+/* ============================================================
+ * Ledger view + provider summary strip.
+ * Shared fills/tracks so a band colour reads the same in both.
+ * ============================================================ */
+
+/* ---------- bars ---------- */
+
+.track,
+.segment {
+  position: relative;
+  display: block;
+  height: 4px;
+  border-radius: $radius-full;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--text-primary) 9%, transparent);
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  transition: width 480ms var(--ease-out-strong);
+}
+
+.levelHigh {
+  background: var(--viz-success);
+}
+
+.levelMedium {
+  background: var(--quota-medium-color);
+}
+
+.levelLow {
+  background: var(--viz-failure);
+}
+
+/* ---------- reset text ---------- */
+
+.reset {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0;
+  min-width: 0;
+  white-space: nowrap;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.resetRelative {
+  color: var(--text-tertiary);
+}
+
+.resetAbsolute {
+  color: var(--text-quaternary);
+
+  &::before {
+    content: '·';
+    margin: 0 5px;
+  }
+}
+
+.resetIdle {
+  font-size: 12.5px;
+  color: var(--text-quaternary);
+  white-space: nowrap;
+}
+
+/* ---------- summary strip ---------- */
+
+.summaryWrap {
+  container-type: inline-size;
+  min-width: 0;
+}
+
+/* Columns stay a quarter of the content width (the strip shrinks rather than
+ * stretching one provider across the page); `--summary-cols` and
+ * `--summary-span` come from the component. */
+.summaryStrip {
+  display: grid;
+  grid-template-columns: repeat(var(--summary-cols, 4), minmax(0, 1fr));
+  width: calc(100% * var(--summary-span, 1));
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--border-color) 45%, transparent);
+  border-radius: 14px;
+  background: var(--bg-quinary);
+}
+
+@container (max-width: 900px) {
+  .summaryStrip {
+    grid-template-columns: repeat(min(2, var(--summary-cols, 4)), minmax(0, 1fr));
+    width: 100%;
+  }
+}
+
+@container (max-width: 480px) {
+  .summaryStrip {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Negative margins tuck the first column's left rule and the first row's top
+ * rule under the container's clipped edge — dividers without :nth-child maths
+ * for however many providers wrap onto a row. */
+.summaryCell {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 15px 18px 14px;
+  margin: -1px 0 0 -1px;
+  border-top: 1px solid color-mix(in srgb, var(--border-color) 45%, transparent);
+  border-left: 1px solid color-mix(in srgb, var(--border-color) 45%, transparent);
+}
+
+.summaryHead {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.summaryIcon,
+.rowIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.summaryIconImage,
+.rowIconImage {
+  width: 15px;
+  height: 15px;
+  object-fit: contain;
+}
+
+.summaryName {
+  font-size: 14.5px;
+  font-weight: 650;
+  color: var(--text-primary);
+}
+
+.summaryCount {
+  margin-left: auto;
+  font-size: 12.5px;
+  color: var(--text-quaternary);
+  white-space: nowrap;
+}
+
+.summaryMetricLabel {
+  margin-top: 13px;
+  line-height: 1.35;
+  font-size: 12.5px;
+  color: var(--text-tertiary);
+  @include text-ellipsis;
+}
+
+.summaryFigure {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin-top: 2px;
+}
+
+.summaryTotal {
+  font-size: 27px;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+
+.summaryCapacity {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-tertiary);
+}
+
+.segments {
+  display: flex;
+  gap: 6px;
+  margin-top: 11px;
+
+  > .segment {
+    flex: 1 1 0;
+  }
+}
+
+.summaryReset {
+  margin-top: 9px;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 12.5px;
+  line-height: 1.35;
+}
+
+.summarySecondary {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid color-mix(in srgb, var(--border-color) 45%, transparent);
+}
+
+.summarySecondaryHead {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+
+.summarySecondaryLabel {
+  font-size: 12.5px;
+  color: var(--text-tertiary);
+  @include text-ellipsis;
+}
+
+.summarySecondaryValue {
+  font-size: 13px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+.summarySecondaryMore {
+  font-size: 12px;
+  color: var(--text-quaternary);
+}
+
+.summarySecondaryDetail {
+  margin-top: 4px;
+
+  & + & {
+    margin-top: 14px;
+  }
+
+  .segments {
+    margin-top: 10px;
+  }
+
+  .summaryReset {
+    margin-top: 10px;
+  }
+}
+
+.summaryToggle {
+  margin-left: auto;
+  padding: 2px 4px;
+  margin-right: -4px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-quaternary);
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: color var(--dur-hover) var(--ease-out-strong);
+
+  &:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 1px;
+  }
+}
+
+/* ---------- ledger ---------- */
+
+.ledger {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  min-width: 0;
+  container-type: inline-size;
+}
+
+.group {
+  min-width: 0;
+}
+
+.groupTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0 0 4px;
+  font-size: 14.5px;
+  font-weight: 650;
+  color: var(--text-primary);
+}
+
+.groupCount {
+  font-size: 12.5px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-quaternary);
+}
+
+.rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(180px, 262px) minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 24px;
+  padding: 13px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 45%, transparent);
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.identityText {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.fileName {
+  font-family: $font-mono;
+  font-size: 13.5px;
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--text-primary);
+  @include text-ellipsis;
+}
+
+.plan {
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: var(--text-tertiary);
+  @include text-ellipsis;
+}
+
+/* Fixed-width columns so the same window lines up down the whole ledger. */
+.windows {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(120px, 170px));
+  column-gap: 24px;
+  row-gap: 14px;
+  align-items: center;
+  min-width: 0;
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.cellMuted {
+  opacity: 0.48;
+}
+
+.cellHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+.cellLabel {
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--text-secondary);
+  @include text-ellipsis;
+}
+
+.cellPercent {
+  font-size: 14.5px;
+  line-height: 1.3;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+
+.cellReset {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 12.5px;
+  line-height: 1.3;
+}
+
+.rowHint {
+  grid-column: 1 / -1;
+  font-size: 12.5px;
+  color: var(--text-quaternary);
+}
+
+.rowError {
+  grid-column: 1 / -1;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--warning-text);
+  overflow-wrap: anywhere;
+}
+
+.rowSkeleton {
+  display: contents;
+}
+
+.skeletonCell {
+  display: block;
+  height: 42px;
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--text-primary) 5%, transparent) 0%,
+    color-mix(in srgb, var(--text-primary) 10%, transparent) 50%,
+    color-mix(in srgb, var(--text-primary) 5%, transparent) 100%
+  );
+  background-size: 200% 100%;
+  animation: ledger-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes ledger-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+
+  to {
+    background-position: -100% 0;
+  }
+}
+
+.rowActions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.rowRefresh {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  margin-right: -8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-quaternary);
+  font: inherit;
+  font-size: 12.5px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color var(--dur-hover) var(--ease-out-strong),
+    background-color var(--dur-hover) var(--ease-out-strong);
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 1px;
+  }
+}
+
+.spinning {
+  animation: ledger-spin 0.8s linear infinite;
+}
+
+@keyframes ledger-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .summaryToggle:hover,
+  .rowRefresh:hover:not(:disabled) {
+    color: var(--text-primary);
+  }
+
+  .rowRefresh:hover:not(:disabled) {
+    background: var(--bg-tertiary);
+  }
+}
+
+/* Narrow content: windows drop under the identity, action stays top-right. */
+@container (max-width: 1020px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: 14px;
+  }
+
+  .windows {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+@include mobile {
+  .windows {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill {
+    transition: none;
+  }
+
+  .spinning,
+  .skeletonCell {
+    animation: none;
+  }
+}
